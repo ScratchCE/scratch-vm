@@ -542,14 +542,14 @@ class Scratch3LooksBlocks {
 	
 	changeCostume (args, util) {
         this._setCostume(
-            util.target, util.target.currentCostume + args.CHANGE, true
+            util.target, util.target.currentCostume + Cast.toNumber(args.CHANGE), true
         );
     }
 	
 	changeBackdrop (args, util) {
 		const stage = this.runtime.getTargetForStage();
         this._setBackdrop(
-            stage, stage + args.CHANGE, true
+            stage, stage + Cast.toNumber(args.CHANGE), true
         );
     }
 
