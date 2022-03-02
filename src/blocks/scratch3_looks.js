@@ -307,7 +307,11 @@ class Scratch3LooksBlocks {
             looks_goforwardbackwardlayers: this.goForwardBackwardLayers,
             looks_size: this.getSize,
             looks_costumenumbername: this.getCostumeNumberName,
-            looks_backdropnumbername: this.getBackdropNumberName
+            looks_backdropnumbername: this.getBackdropNumberName,
+			looks_navcostume: this.navCostume,
+			looks_navbackdrop: this.navBackdrop,
+			looks_changecostumeby: this.changeCostume,
+			looks_changebackdropby: this.changeBackdrop
         };
     }
 
@@ -404,6 +408,19 @@ class Scratch3LooksBlocks {
                 target.setCostume(target.currentCostume + 1);
             } else if (requestedCostume === 'previous costume') {
                 target.setCostume(target.currentCostume - 1);
+			} else if (requestedCostume === 'random costume') {
+                const numCostumes = target.getCostumes().length;
+                if (numCostumes > 1) {
+                    // Don't pick the current costume, so that the block
+                    // will always have an observable effect.
+                    const lowerBound = 0;
+                    const upperBound = numCostumes - 1;
+                    const costumeToExclude = target.currentCostume;
+
+                    const nextCostume = MathUtil.inclusiveRandIntWithout(lowerBound, upperBound, costumeToExclude);
+
+                    target.setCostume(nextCostume);
+                }
             // Try to cast the string to a number (and treat it as a costume index)
             // Pure whitespace should not be treated as a number
             // Note: isNaN will cast the string to a number before checking if it's NaN
@@ -472,6 +489,67 @@ class Scratch3LooksBlocks {
     nextCostume (args, util) {
         this._setCostume(
             util.target, util.target.currentCostume + 1, true
+        );
+    }
+	
+	navCostume (args, util) {
+		const navTo = args.NAVIGATE;
+		const target = util.target;
+		
+		if (navTo === 'NEXT') {
+            target.setCostume(target.currentCostume + 1);
+        } else if (navTo === 'PREVIOUS') {
+            target.setCostume(target.currentCostume - 1);
+		} else if (navTo === 'RANDOM') {
+            const numCostumes = target.getCostumes().length;
+            if (numCostumes > 1) {
+                // Don't pick the current costume, so that the block
+                // will always have an observable effect.
+                const lowerBound = 0;
+                const upperBound = numCostumes - 1;
+                const costumeToExclude = target.currentCostume;
+
+                const nextCostume = MathUtil.inclusiveRandIntWithout(lowerBound, upperBound, costumeToExclude);
+
+                target.setCostume(nextCostume);
+            }
+        }
+	}
+	
+	navBackdrop (args, util) {
+		const navTo = args.NAVIGATE;
+		const stage = this.runtime.getTargetForStage();
+		
+		if (navTo === 'NEXT') {
+            stage.setCostume(stage.currentCostume + 1);
+        } else if (navTo === 'PREVIOUS') {
+            stage.setCostume(stage.currentCostume - 1);
+		} else if (navTo === 'RANDOM') {
+            const numCostumes = stage.getCostumes().length;
+            if (numCostumes > 1) {
+                // Don't pick the current backdrop, so that the block
+                // will always have an observable effect.
+                const lowerBound = 0;
+                const upperBound = numCostumes - 1;
+                const costumeToExclude = stage.currentCostume;
+
+                const nextCostume = MathUtil.inclusiveRandIntWithout(lowerBound, upperBound, costumeToExclude);
+
+                stage.setCostume(nextCostume);
+            }
+        }
+	}
+	
+	changeCostume (args, util) {
+        this._setCostume(
+            util.target, util.target.currentCostume + args.CHANGE, true
+        );
+    }
+	
+	changeBackdrop (args, util) {
+		const stage = this.runtime.getTargetForStage();
+        this._setBackdrop(
+            stage, stage + args.CHANGE, true
         );
     }
 
