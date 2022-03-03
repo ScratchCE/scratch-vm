@@ -38,8 +38,7 @@ class Scratch3ControlBlocks {
             control_get_counter: this.getCounter,
             control_incr_counter: this.incrCounter,
             control_clear_counter: this.clearCounter,
-            control_all_at_once: this.allAtOnce,
-			control_restart: this.restart
+            control_all_at_once: this.allAtOnce
         };
     }
 
@@ -202,10 +201,6 @@ class Scratch3ControlBlocks {
         // removed before the release of 2.0.)
         util.startBranch(1, false);
     }
-	
-	restart (args, util) {
-		this.runtime.greenFlag();
-	}
 }
 
 module.exports = Scratch3ControlBlocks;

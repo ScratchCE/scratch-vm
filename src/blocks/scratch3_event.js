@@ -27,7 +27,8 @@ class Scratch3EventBlocks {
             event_whentouchingobject: this.touchingObject,
             event_broadcast: this.broadcast,
             event_broadcastandwait: this.broadcastAndWait,
-            event_whengreaterthan: this.hatGreaterThanPredicate
+            event_whengreaterthan: this.hatGreaterThanPredicate,
+			control_restart: this.restart
         };
     }
 
@@ -132,6 +133,10 @@ class Scratch3EventBlocks {
             }
         }
     }
+	
+	restart (args, util) {
+		this.runtime.greenFlag();
+	}
 }
 
 module.exports = Scratch3EventBlocks;

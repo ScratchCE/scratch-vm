@@ -72,7 +72,9 @@ class Scratch3SensingBlocks {
             sensing_askandwait: this.askAndWait,
             sensing_answer: this.getAnswer,
             sensing_username: this.getUsername,
-            sensing_userid: () => {} // legacy no-op block
+            sensing_userid: () => {}, // legacy no-op block
+			sensing_lastkeypressed: this.lastKeyPressed,
+			sensing_mousebuttondown: this.mouseBtnDown
         };
     }
 
@@ -330,6 +332,15 @@ class Scratch3SensingBlocks {
 
     getUsername (args, util) {
         return util.ioQuery('userData', 'getUsername');
+    }
+	
+	lastKeyPressed (args, util) {
+        return util.ioQuery('keyboard', 'getLastKeyPressed');
+    }
+
+    mouseBtnDown (args, util) {
+        const button = Cast.toNumber(args.BUTTON);
+        return util.ioQuery('mouse', 'getButtonIsDown', [button]);
     }
 }
 
