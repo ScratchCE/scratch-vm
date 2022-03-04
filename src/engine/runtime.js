@@ -414,8 +414,8 @@ class Runtime extends EventEmitter {
 
         this.runtimeOptions = {
             maxClones: Runtime.MAX_CLONES,
-            miscLimits: true,
-            fencing: true
+            miscLimits: false,
+            fencing: false
         };
 
         this.compilerOptions = {
@@ -813,7 +813,7 @@ class Runtime extends EventEmitter {
      */
     static get MAX_CLONES () {
         // tw: clone limit is set per-runtime in runtimeOptions, this is only the initial value
-        return 300;
+        return Infinity;
     }
 
     // -----------------------------------------------------------------------------

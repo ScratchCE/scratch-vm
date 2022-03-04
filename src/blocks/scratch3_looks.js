@@ -311,7 +311,8 @@ class Scratch3LooksBlocks {
 			looks_navcostume: this.navCostume,
 			looks_navbackdrop: this.navBackdrop,
 			looks_changecostumeby: this.changeCostume,
-			looks_changebackdropby: this.changeBackdrop
+			looks_changebackdropby: this.changeBackdrop,
+			looks_goontopof: this.goOnTopOf
         };
     }
 
@@ -689,6 +690,37 @@ class Scratch3LooksBlocks {
         // Else return name
         return util.target.getCostumes()[util.target.currentCostume].name;
     }
+	
+	goOnTopOf (args, util) {
+		const self = util.target;
+		
+		// Stage cannot switch layers
+		if (self.isStage) return;
+		
+		args.SPRITE = Cast.toString(args.SPRITE);
+		const target = this.runtime.getSpriteTargetByName(args.SPRITE);
+
+		// Stage is always at the back
+		if (args.SPRITE === "_stage_") {
+			self.goToBack();
+			return;
+		}
+				
+		// If a sprite tries to go on top of itself with this block,
+		// it functions like go foward 1 layers without this check,
+		// even though users would expect doing that to do nothing.
+		if (target === self) {
+			return;
+		}
+		
+		self.goBehindOther(target);
+		self.goForwardLayers(1);
+		// For some reason, going in front of a sprite right in front
+		// of the current sprite places it in front of the next sprite
+		// too. Running the block twice fixes this.
+		self.goBehindOther(target);
+		self.goForwardLayers(1);
+	}
 }
 
 module.exports = Scratch3LooksBlocks;

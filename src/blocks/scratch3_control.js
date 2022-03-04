@@ -146,7 +146,10 @@ class Scratch3ControlBlocks {
             util.stopOtherTargetThreads();
         } else if (option === 'this script') {
             util.stopThisScript();
-        }
+        } else if (option === 'running scripts') {
+			util.stopAll();
+			this.runtime.startHats('event_whenstopsignclicked');
+		}
     }
 
     createClone (args, util) {
