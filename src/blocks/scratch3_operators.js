@@ -174,11 +174,11 @@ class Scratch3OperatorsBlocks {
     }
 	
 	gtOrEq (args, util) {
-		return Cast.compare(args.OPERAND1, args.OPERAND2) <= 0;
+		return Cast.compare(args.OPERAND1, args.OPERAND2) >= 0;
 	}
 	
 	ltOrEq (args, util) {
-		return Cast.compare(args.OPERAND1, args.OPERAND2) >= 0;
+		return Cast.compare(args.OPERAND1, args.OPERAND2) <= 0;
 	}
 	
 	power (args, util) {
