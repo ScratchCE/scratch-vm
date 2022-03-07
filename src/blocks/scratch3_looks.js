@@ -301,8 +301,8 @@ class Scratch3LooksBlocks {
             looks_cleargraphiceffects: this.clearEffects,
             looks_changesizeby: this.changeSize,
             looks_setsizeto: this.setSize,
-            looks_changestretchby: () => {}, // legacy no-op blocks
-            looks_setstretchto: () => {},
+            looks_changestretchby: this.changeStretch,
+            looks_setstretchto: this.setStretch,
             looks_gotofrontback: this.goToFrontBack,
             looks_goforwardbackwardlayers: this.goForwardBackwardLayers,
             looks_size: this.getSize,
@@ -312,8 +312,9 @@ class Scratch3LooksBlocks {
 			looks_navbackdrop: this.navBackdrop,
 			looks_changecostumeby: this.changeCostume,
 			looks_changebackdropby: this.changeBackdrop,
-			looks_goontopof: this.goOnTopOf
-        };
+			looks_goontopof: this.goOnTopOf,
+            looks_stretch: this.getStretch
+       };
     }
 
     getMonitored () {
@@ -721,6 +722,20 @@ class Scratch3LooksBlocks {
 		self.goBehindOther(target);
 		self.goForwardLayers(1);
 	}
+	
+	changeStretch (args, util) {
+        const change = Cast.toNumber(args.CHANGE);
+        util.target.setStretch(util.target.stretch + change);
+    }
+
+    setStretch (args, util) {
+        const stretch = Cast.toNumber(args.STRETCH);
+        util.target.setStretch(stretch);
+    }
+	
+	getStretch (args, util) {
+        return Math.round(util.target.stretch);
+    }
 }
 
 module.exports = Scratch3LooksBlocks;

@@ -107,6 +107,12 @@ class RenderedTarget extends Target {
          */
         this.size = 100;
 
+		/**
+         * Horizontal stretch of rendered target as a percent of costume size.
+         * @type {number}
+         */
+        this.stretch = 100;
+
         /**
          * Currently selected costume index.
          * @type {number}
@@ -294,7 +300,7 @@ class RenderedTarget extends Target {
     _getRenderedDirectionAndScale () {
         // Default: no changes to `this.direction` or `this.scale`.
         let finalDirection = this.direction;
-        let finalScale = [this.size, this.size];
+        let finalScale = [this.size * (this.stretch / 100), this.size];
         if (this.rotationStyle === RenderedTarget.ROTATION_STYLE_NONE) {
             // Force rendered direction to be 90.
             finalDirection = 90;
@@ -302,7 +308,7 @@ class RenderedTarget extends Target {
             // Force rendered direction to be 90, and flip drawable if needed.
             finalDirection = 90;
             const scaleFlip = (this.direction < 0) ? -1 : 1;
-            finalScale = [scaleFlip * this.size, this.size];
+            finalScale = [scaleFlip * (this.size * (this.stretch / 100)), this.size];
         }
         return {direction: finalDirection, scale: finalScale};
     }
@@ -394,6 +400,45 @@ class RenderedTarget extends Target {
         }
         this.runtime.requestTargetsUpdate(this);
     }
+
+    /**
+     * Set size, as a percentage of the costume size.
+     * @param {!number} size Size of rendered target, as % of costume size.
+     */
+    setStretch (stretch) { // used by compiler
+        if (this.isStage) {
+            return;
+        }
+        if (this.renderer) {
+            // Clamp to scales relative to costume and stage size.
+            // See original ScratchSprite.as:setSize.
+            const costumeSize = this.renderer.getCurrentSkinSize(this.drawableID);
+            const origW = costumeSize[0];
+            const origH = costumeSize[1];
+            const fencing = this.runtime.runtimeOptions.fencing;
+            const minScale = fencing ? -Math.min(
+                (1.5 * this.runtime.stageWidth) / origW,
+                (1.5 * this.runtime.stageHeight) / origH
+            ) : -Infinity;
+            const maxScale = fencing ? Math.min(
+                (1.5 * this.runtime.stageWidth) / origW,
+                (1.5 * this.runtime.stageHeight) / origH
+            ) : Infinity;
+            this.stretch = MathUtil.clamp(stretch / 100, minScale, maxScale) * 100;
+            const {direction, scale} = this._getRenderedDirectionAndScale();
+            this.renderer.updateDrawableDirectionScale(this.drawableID, direction, scale);
+            if (this.visible) {
+                this.emitVisualChange();
+                this.runtime.requestRedraw();
+            }
+        } else {
+            // tw: setSize should update size even without a renderer
+            // needed by tw-change-size-does-not-use-rounded-size.sb3 test
+            this.stretch = stretch;
+        }
+        this.runtime.requestTargetsUpdate(this);
+    }
+
 
     /**
      * Set a particular graphic effect value.
@@ -1096,7 +1141,8 @@ class RenderedTarget extends Target {
             tempo: this.tempo,
             volume: this.volume,
             videoTransparency: this.videoTransparency,
-            videoState: this.videoState
+            videoState: this.videoState,
+            stretch: this.stretch
 
         };
     }

@@ -476,6 +476,7 @@ const serializeTarget = function (target, extensions) {
         obj.y = target.y;
         obj.size = target.size;
         obj.direction = target.direction;
+		obj.stretch = target.stretch;
         obj.draggable = target.draggable;
         obj.rotationStyle = target.rotationStyle;
     }
@@ -1076,6 +1077,9 @@ const parseScratchObject = function (object, runtime, extensions, zip, assets) {
     }
     if (object.hasOwnProperty('isStage')) {
         target.isStage = object.isStage;
+    }
+    if (object.hasOwnProperty('stretch')) {
+        target.stretch = object.stretch;
     }
     if (object.hasOwnProperty('targetPaneOrder')) {
         // Temporarily store the 'targetPaneOrder' property

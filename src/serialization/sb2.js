@@ -693,6 +693,18 @@ const parseScratchObject = function (object, runtime, extensions, topLevel, zip,
         // SB2 stores as 1.0 = 100%; we use % in the VM.
         target.size = object.scale * 100;
     }
+    if (object.hasOwnProperty('stretch')) {
+		// Scratch 2.0 didn't actually store stretch ever
+		// as shown by the vanilla sb2.js not having it.
+		// However, ScratchCE's fork of sb1-converter sets this
+		// parameter only so that it can pass through this script,
+		// so that 1.4 stretch values get converted
+		// into 3.0 ScratchCE stretch values.
+		
+		// SCE sb1-converter converts to stretch as 1.0 = 100%
+		// for consistency with sb2/1 scale.
+        target.stretch = object.stretch * 100;
+    }
     if (object.hasOwnProperty('visible')) {
         target.visible = object.visible;
     }
