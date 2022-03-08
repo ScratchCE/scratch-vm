@@ -1941,14 +1941,14 @@ class Runtime extends EventEmitter {
                 blockId: topBlockId,
                 fieldsOfInputs: hatFields
             } = script;
-
+			
             // Match any requested fields.
             // For example: ensures that broadcasts match.
             // This needs to happen before the block is evaluated
             // (i.e., before the predicate can be run) because "broadcast and wait"
             // needs to have a precise collection of started threads.
             for (const matchField in optMatchFields) {
-                if (hatFields[matchField].value !== optMatchFields[matchField]) {
+                if (!hatFields[matchField] || hatFields[matchField].value !== optMatchFields[matchField]) {
                     // Field mismatch.
                     return;
                 }

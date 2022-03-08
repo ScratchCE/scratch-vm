@@ -329,6 +329,10 @@ class Scratch3LooksBlocks {
             },
             looks_backdropnumbername: {
                 getId: (_, fields) => getMonitorIdForBlockWithArgs('backdropnumbername', fields)
+            },
+			looks_stretch: {
+                isSpriteSpecific: true,
+                getId: targetId => `${targetId}_stretch`
             }
         };
     }

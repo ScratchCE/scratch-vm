@@ -824,6 +824,31 @@ const deserializeBlocks = function (blocks) {
             continue;
         }
         const block = blocks[blockId];
+		
+		// I'll just put migration code stuff here
+		switch (block.opcode) {
+			case "looks_nextcostume":
+				// Replace "next costume" with "[next] costume"
+				block.opcode = "looks_navcostume";
+				block.fields = {
+					NAVIGATE: [
+						"NEXT",
+						null
+					]
+				};
+			break;
+			case "looks_nextbackdrop":
+				// Replace "next backdrop" with "[next] backdrop"
+				block.opcode = "looks_navbackdrop";
+				block.fields = {
+					NAVIGATE: [
+						"NEXT",
+						null
+					]
+				};
+			break;
+		}
+		
         if (Array.isArray(block)) {
             // this is one of the primitives
             // delete the old entry in object.blocks and replace it w/the

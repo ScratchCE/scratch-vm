@@ -28,7 +28,8 @@ class Scratch3EventBlocks {
             event_broadcast: this.broadcast,
             event_broadcastandwait: this.broadcastAndWait,
             event_whengreaterthan: this.hatGreaterThanPredicate,
-			control_restart: this.restart
+			control_restart: this.restart,
+            event_when: this.when
         };
     }
 
@@ -62,12 +63,20 @@ class Scratch3EventBlocks {
             },
             event_whenbroadcastreceived: {
                 restartExistingThreads: true
+            },
+			event_when: {
+                restartExistingThreads: false,
+                edgeActivated: true
             }
         };
     }
 
     touchingObject (args, util) {
         return util.target.isTouchingObject(args.TOUCHINGOBJECTMENU);
+    }
+	
+	when (args, util) {
+        return args.CONDITION;
     }
 
     hatGreaterThanPredicate (args, util) {
