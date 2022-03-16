@@ -139,7 +139,8 @@ class Scratch3SoundBlocks {
             sound_effects_menu: this.effectsMenu,
             sound_setvolumeto: this.setVolume,
             sound_changevolumeby: this.changeVolume,
-            sound_volume: this.getVolume
+            sound_volume: this.getVolume,
+			sound_geteffect: this.getEffect
         };
     }
 
@@ -354,6 +355,15 @@ class Scratch3SoundBlocks {
     effectsMenu (args) {
         return args.EFFECT;
     }
+	
+	getEffect (args, util) {
+		const effect = Cast.toString(args.EFFECT).toLowerCase();
+
+        const soundState = this._getSoundState(util.target);
+        if (!soundState.effects.hasOwnProperty(effect)) return 0;
+		
+		return soundState.effects[effect];
+	}
 }
 
 module.exports = Scratch3SoundBlocks;

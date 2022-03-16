@@ -38,7 +38,9 @@ class Scratch3ControlBlocks {
             control_get_counter: this.getCounter,
             control_incr_counter: this.incrCounter,
             control_clear_counter: this.clearCounter,
-            control_all_at_once: this.allAtOnce
+            control_all_at_once: this.allAtOnce,
+			control_launch: this.launch,
+			control_sayasscript: this.sayAsScript
         };
     }
 
@@ -149,6 +151,9 @@ class Scratch3ControlBlocks {
         } else if (option === 'running scripts') {
 			util.stopAll();
 			this.runtime.startHats('event_whenstopsignclicked');
+		} else if (option === 'all scripts in sprite') {
+			util.stopOtherTargetThreads();
+			util.stopThisScript();
 		}
     }
 
@@ -196,13 +201,25 @@ class Scratch3ControlBlocks {
     }
 
     allAtOnce (args, util) {
-        // Since the "all at once" block is implemented for compatiblity with
-        // Scratch 2.0 projects, it behaves the same way it did in 2.0, which
-        // is to simply run the contained script (like "if 1 = 1").
-        // (In early versions of Scratch 2.0, it would work the same way as
-        // "run without screen refresh" custom blocks do now, but this was
-        // removed before the release of 2.0.)
-        util.startBranch(1, false);
+        util.startBranch(1, false, true);
+    }
+	
+	launch (args, util) {
+		console.log(args, util);
+		
+		const currentBlockId = util.thread.peekStack();
+		const branchBlock = util.thread.target.blocks.getBranch(
+            currentBlockId,
+            0
+        );
+
+		if (branchBlock) {
+			util.sequencer.runtime._pushThread(branchBlock, util.target, {});
+		}
+	}
+	
+	sayAsScript (args) {
+        return Cast.toString(args.MESSAGE);
     }
 }
 

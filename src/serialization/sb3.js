@@ -847,6 +847,32 @@ const deserializeBlocks = function (blocks) {
 					]
 				};
 			break;
+			case "operator_letters_of":
+			case "operator_split":
+			case "operator_count":
+			case "operator_indexof":
+			case "operator_replace":
+			case "operator_repeat":
+			case "operator_unicodeof":
+			case "operator_unicodefrom":
+			case "operator_identical":
+				// Operators blocks that were moved into the Text extension
+				block.opcode = block.opcode.replace("operator", "strings");
+			break;
+			// Convert TurboWarp blocks to their SCE counterparts
+			case "tw_getButtonIsDown":
+				block.opcode = "sensing_mousebuttondown";
+				block.inputs.BUTTON = block.inputs.MOUSE_BUTTON;
+				delete block.inputs.MOUSE_BUTTON;
+			break;
+			case "tw_menu_mouseButton":
+				block.opcode = "sensing_mousebuttondownmenu";
+				block.inputs.BUTTON = block.inputs.mouseButton;
+				delete block.inputs.mouseButton;
+			break;
+			case "tw_getLastKeyPressed":
+				block.opcode = "sensing_lastkeypressed";
+			break;
 		}
 		
         if (Array.isArray(block)) {

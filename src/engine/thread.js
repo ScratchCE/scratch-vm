@@ -270,14 +270,15 @@ class Thread {
     /**
      * Push stack and update stack frames appropriately.
      * @param {string} blockId Block ID to push to stack.
+	 * @param {boolean} isWarp Whether the stack frame will be in warp mode.
      */
-    pushStack (blockId) {
+    pushStack (blockId, isWarp) {
         this.stack.push(blockId);
         // Push an empty stack frame, if we need one.
         // Might not, if we just popped the stack.
         if (this.stack.length > this.stackFrames.length) {
             const parent = this.stackFrames[this.stackFrames.length - 1];
-            this.stackFrames.push(_StackFrame.create(typeof parent !== 'undefined' && parent.warpMode));
+            this.stackFrames.push(_StackFrame.create(isWarp || (typeof parent !== 'undefined' && parent.warpMode)));
         }
     }
 

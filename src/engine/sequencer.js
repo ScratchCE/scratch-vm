@@ -287,8 +287,9 @@ class Sequencer {
      * @param {!Thread} thread Thread object to step to branch.
      * @param {number} branchNum Which branch to step to (i.e., 1, 2).
      * @param {boolean} isLoop Whether this block is a loop.
+	 * @param {boolean} isWarp Whether the branch will be in warp mode or not.
      */
-    stepToBranch (thread, branchNum, isLoop) {
+    stepToBranch (thread, branchNum, isLoop, isWarp) {
         if (!branchNum) {
             branchNum = 1;
         }
@@ -300,9 +301,9 @@ class Sequencer {
         thread.peekStackFrame().isLoop = isLoop;
         if (branchId) {
             // Push branch ID to the thread's stack.
-            thread.pushStack(branchId);
+            thread.pushStack(branchId, isWarp);
         } else {
-            thread.pushStack(null);
+            thread.pushStack(null, isWarp);
         }
     }
 

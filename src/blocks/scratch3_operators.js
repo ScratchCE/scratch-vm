@@ -36,22 +36,13 @@ class Scratch3OperatorsBlocks {
             operator_mathop: this.mathop,
 			operator_bool: (args) => {return args.VALUE},
 			operator_identity: (args) => {return args.VALUE},
-			operator_gtoreq: this.gtOrEq,
-			operator_ltoreq: this.ltOrEq,
 			operator_power: this.power,
-			operator_identical: this.identical,
 			operator_neg: this.neg,
-			operator_unicodeof: this.unicodeOf,
-			operator_unicodefrom: this.unicodeFrom,
 			operator_true: () => {return true},
 			operator_false: () => {return false},
 			operator_xor: this.xor,
-			operator_letters_of: this.lettersOf,
-			operator_count: this.count,
-			operator_split: this.split,
-			operator_replace: this.replace,
-			operator_indexof: this.indexOf,
-			operator_repeat: this.repeat
+			operator_gtoreq: this.gtOrEq,
+			operator_ltoreq: this.ltOrEq
         };
     }
 
@@ -187,86 +178,12 @@ class Scratch3OperatorsBlocks {
 		return Math.pow(num1, num2);
 	}
 	
-	identical (args, util) {
-		// Purposefully no casting, because
-		// types ARE differentiated in this block
-		return args.OPERAND1 === args.OPERAND2
-	}
-	
-	neg (args, util) {
-		return -Cast.toNumber(args.NUM);
-	}
-	
-	unicodeOf (args, util) {
-		const chars = Array.from(Cast.toString(args.STRING));
-		return chars.map((char) => {return char.charCodeAt(0)}).join(" ");
-	}
-	
-	unicodeFrom (args, util) {
-		return String.fromCharCode(Cast.toNumber(args.NUM));
-	}
-	
 	xor (args, util) {
 		return (Cast.toBoolean(args.OPERAND1) + Cast.toBoolean(args.OPERAND2)) === 1;
 	}
 	
-	lettersOf (args, util) {
-		args.STRING = Cast.toString(args.STRING);
-		args.LETTER1 = Cast.toNumber(args.LETTER1);
-		args.LETTER2 = Cast.toNumber(args.LETTER2);
-		return args.STRING.substring(args.LETTER1 - 1, args.LETTER2);
-	}
-	
-	count (args, util) {
-		//.toLowerCase() for case insensitivity
-		args.STRING = Cast.toString(args.STRING).toLowerCase();
-		args.SUBSTRING = Cast.toString(args.SUBSTRING).toLowerCase();
-		
-		return args.STRING.split(args.SUBSTRING).length - 1;
-	}
-	
-	split (args, util) {
-		// .toLowerCase() for case insensitivity
-		args.STRING = Cast.toString(args.STRING).toLowerCase();
-		args.SPLIT = Cast.toString(args.SPLIT).toLowerCase();
-				
-		const split = args.STRING.split(args.SPLIT);
-		args.ITEM = Cast.toListIndex(args.ITEM, split.length, false);
-		
-		if (args.ITEM === Cast.LIST_INVALID) {
-			return '';
-		}
-		return split[args.ITEM - 1];
-		
-	}
-	
-	replace (args, util) {
-		args.STRING = Cast.toString(args.STRING);
-		args.SUBSTRING = Cast.toString(args.SUBSTRING);
-		
-		args.REPLACE = Cast.toString(args.REPLACE);
-		
-		return args.STRING.replaceAll(args.SUBSTRING, args.REPLACE);
-	}
-	
-	indexOf (args, util) {
-		// .toLowerCase() for case insensitivity
-		args.STRING = Cast.toString(args.STRING).toLowerCase();
-		args.SUBSTRING = Cast.toString(args.SUBSTRING).toLowerCase();
-		
-		// Since both arguments are casted to strings beforehand,
-		// we dpm't have to worry about type differences
-		// like in the item number of in list block.
-		const found = args.STRING.indexOf(args.SUBSTRING);
-		
-		// indexOf returns -1 when no matches are found
-		return found === -1 ? 0 : found + 1;
-	}
-	
-	repeat (args, util) {
-		args.STRING = Cast.toString(args.STRING);
-		args.REPEAT = Cast.toNumber(args.REPEAT);
-		return args.STRING.repeat(args.REPEAT);
+	neg (args, util) {
+		return -Cast.toNumber(args.NUM);
 	}
 }
 

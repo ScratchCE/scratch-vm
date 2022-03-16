@@ -313,7 +313,8 @@ class Scratch3LooksBlocks {
 			looks_changecostumeby: this.changeCostume,
 			looks_changebackdropby: this.changeBackdrop,
 			looks_goontopof: this.goOnTopOf,
-            looks_stretch: this.getStretch
+            looks_stretch: this.getStretch,
+            looks_geteffect: this.getEffect
        };
     }
 
@@ -732,7 +733,7 @@ class Scratch3LooksBlocks {
         util.target.setStretch(util.target.stretch + change);
     }
 
-    setStretch (args, util) {
+    setStretch (args, util) {		
         const stretch = Cast.toNumber(args.STRETCH);
         util.target.setStretch(stretch);
     }
@@ -740,6 +741,12 @@ class Scratch3LooksBlocks {
 	getStretch (args, util) {
         return Math.round(util.target.stretch);
     }
+	
+	getEffect (args, util) {
+		const effect = Cast.toString(args.EFFECT).toLowerCase();
+		if (!util.target.effects.hasOwnProperty(effect)) return 0;
+		return util.target.effects[effect];
+	}
 }
 
 module.exports = Scratch3LooksBlocks;
