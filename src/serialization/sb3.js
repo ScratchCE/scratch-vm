@@ -859,6 +859,20 @@ const deserializeBlocks = function (blocks) {
 				// Operators blocks that were moved into the Text extension
 				block.opcode = block.opcode.replace("operator", "strings");
 			break;
+			case "text_letters_of":
+			case "text_split":
+			case "text_count":
+			case "text_indexof":
+			case "text_replace":
+			case "text_repeat":
+			case "text_unicodeof":
+			case "text_unicodefrom":
+			case "text_identical":
+			case "text_isCase":
+			case "text_toCase":
+				// Correct Text extension ID because i messed it up asdfjuamjaasdf
+				block.opcode = block.opcode.replace("text", "strings");
+			break;
 			// Convert TurboWarp blocks to their SCE counterparts
 			case "tw_getButtonIsDown":
 				block.opcode = "sensing_mousebuttondown";

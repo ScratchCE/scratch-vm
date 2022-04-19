@@ -88,7 +88,7 @@ class Scratch3StringsBlocks {
      */
     getInfo () {
         return {
-            id: 'text',
+            id: 'strings',
             name: formatMessage({
                 id: 'strings.categoryName',
                 default: 'Text',
