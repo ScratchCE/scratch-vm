@@ -41,8 +41,8 @@
     "immutable": "3.8.2",
     "jszip": "^3.1.5",
     "minilog": "3.1.0",
-    "scratch-parser": "github:TurboWarp/scratch-parser",
-    "scratch-sb1-converter": "0.2.7",
+    "scratch-parser": "github:ScratchCE/scratch-parser",
+    "scratch-sb1-converter": "github:ScratchCE/scratch-sb1-converter",
     "scratch-translate-extension-languages": "0.0.20191118205314",
     "text-encoding": "0.7.0",
     "worker-loader": "^1.1.1"
